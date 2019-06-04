@@ -2,6 +2,7 @@ import React from 'react';
 
 export default () => {
   return (
-    <div>Board</div>
+    <div>Board Menu</div>
   );
 }
+

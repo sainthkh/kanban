@@ -9,7 +9,8 @@ import indigo from '@material-ui/core/colors/indigo';
 import pink from '@material-ui/core/colors/pink';
 import grey from '@material-ui/core/colors/grey';
 import { faGoogle, faFacebookSquare as faFacebook } from '@fortawesome/free-brands-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+import ButtonIcon from '../../components/ButtonIcon';
 
 export default () => {
   return (
@@ -51,11 +52,11 @@ export default () => {
       </Text>
       <Container>
         <SocialButton>
-          <Icon icon={faFacebook} color="#3b5998" />
+          <ButtonIcon icon={faFacebook} color="#3b5998" />
           Login with Facebook
         </SocialButton>
         <SocialButton>
-          <Icon icon={faGoogle} color="#DB4437" />
+          <ButtonIcon icon={faGoogle} color="#DB4437" />
           Login with Google
         </SocialButton>
       </Container>
@@ -113,8 +114,4 @@ const SocialButton = styled(Button)({
   color: grey[900],
   width: 220,
   marginBottom: 8,
-})
-
-const Icon = styled(FontAwesomeIcon)({
-  marginRight: 8,
 })
