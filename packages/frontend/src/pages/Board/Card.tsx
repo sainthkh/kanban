@@ -28,10 +28,10 @@ const Card = styled('div')(({theme}) => ({
   fontSize: 14,
   padding: theme.spacing(1.5, 2, 1),
   background: fade(indigo[50], 0.5),
-  boxShadow: `0px 0px 4px 1px ${indigo[100]}`,
+  boxShadow: `0px 1px 2px 1px ${indigo[100]}`,
   '&:hover': {
     background: fade(indigo[50], 0.7),
-    boxShadow: `0px 0px 4px 1px ${indigo[200]}`,
+    boxShadow: `0px 2px 4px 1px ${indigo[200]}`,
     cursor: 'pointer',
   },
 }));
