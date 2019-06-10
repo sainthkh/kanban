@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import Index from './pages/Index';
 import Board from './pages/Board/Board';
+import Card from './pages/Card/Card';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
@@ -14,6 +15,7 @@ const App: React.FC = () => {
         <div className="App">
           <Route path="/" exact component={Index} />
           <Route path="/b/" component={Board} />
+          <Route path="/c/" component={Card} />
         </div>
       </Router>
     </MuiThemeProvider>
