@@ -1,16 +1,26 @@
 import React from 'react';
 import ButtonBase from '@material-ui/core/Button';
-import LinearProgress from '@material-ui/core/LinearProgress';
-import TextField from '@material-ui/core/TextField';
-import Checkbox from '@material-ui/core/Checkbox';
 import { styled } from '@material-ui/styles';
 import indigo from '@material-ui/core/colors/indigo';
+import grey from '@material-ui/core/colors/grey';
+import blueGrey from '@material-ui/core/colors/blueGrey';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFileSignature, faAlignJustify, faUserAlt, faTag, faCheckSquare, faClock, faPaperclip, faArrowRight, faCopy, faEye, faArchive, faShare, faComment, faAt } from '@fortawesome/free-solid-svg-icons';
-import { faSmile, faListAlt } from '@fortawesome/free-regular-svg-icons';
+import { 
+  faCreditCard, faUserAlt, faTag, 
+  faCheckSquare, faClock, faPaperclip, faArrowRight, 
+  faCopy, faEye, faArchive, faShare, faRocket,
+} from '@fortawesome/free-solid-svg-icons';
 
 import Board from '../Board/Board';
-import MemberIcon from '../../components/MemberIcon';
+import MemberIcon, { Props as MemberIconProps } from '../../components/MemberIcon';
+import CloseButton from './CloseButton';
+import Label from './Label';
+import DueDate from './DueDate';
+import Description from './Description';
+import Checklist from './Checklist';
+import CommentEditor from './CommentEditor';
+import Activity from './Activity';
+import { SectionTitleIcon as Icon } from './Section';
 
 export default () => {
   return (
@@ -18,36 +28,35 @@ export default () => {
       <Board />
       <Overlay>
         <Detail>
-          <Title><Icon icon={faFileSignature} />Card</Title>
-          <List>in list <ListLink>Name</ListLink></List>
           <FlexBox>
             <Content>
+              <Title><Icon icon={faCreditCard} />Card</Title>
+              <List>in list <ListLink href="#">Name</ListLink></List>            
               <MetaBox>
-                <Members><MetaTitle>Members</MetaTitle><MemberIcon>K</MemberIcon><MemberIcon>U</MemberIcon></Members>
-                <Labels><MetaTitle>Labels</MetaTitle><Label>One</Label><Label>Two</Label></Labels>
-                <MetaTitle>Due date</MetaTitle>
-                <DueDate datetime="Tomorrow at 12:00(due soon)" />
+                <Meta>
+                  <MetaTitle>Members</MetaTitle>
+                  <Participants>
+                    <ParticipantIcon name="K" /><ParticipantIcon name="U" />
+                  </Participants>
+                </Meta>
+                <Meta>
+                  <MetaTitle>Labels</MetaTitle>
+                  <Labels>
+                    <Label name="One" background="#61bd4f" /><Label name="Two" background="#61bd4f" />
+                  </Labels>
+                </Meta>
+                <Meta>
+                  <MetaTitle>Due date</MetaTitle>
+                  <DueDate datetime="Tomorrow at 12:00(due soon)" />
+                </Meta>
               </MetaBox>
-              <Description>
-                <SectionTitle><Icon icon={faAlignJustify} />Description <ActionButton>Edit</ActionButton></SectionTitle>
-                Hello
-              </Description>
-              <Checklist>
-                <SectionTitle><Icon icon={faCheckSquare} />Checklist <ActionButton>Delete</ActionButton></SectionTitle>
-                <Progress progress={30} />
-                <ChecklistItem value={false} text="Get things done" />
-              </Checklist>
-              <AddComment>
-                <SectionTitle><Icon icon={faComment} />Add Comment</SectionTitle>
-                <Editor />
-              </AddComment>
-              <Activity>
-                <SectionTitle><Icon icon={faListAlt} />Activity</SectionTitle>
-                <ActivityLog activity={{type:"setDueDate", datetime:"tomorrow at 12:00 PM"}} />
-                <Comment />
-              </Activity>
+              <Description />
+              <Checklist />
+              <CommentEditor />
+              <Activity />
             </Content>
             <Actions>
+              <CloseButton />
               <ButtonGroup>
                 <ButtonGroupName>Add to card</ButtonGroupName>
                 <MenuButton><ButtonIcon icon={faUserAlt} />Members</MenuButton>
@@ -58,6 +67,7 @@ export default () => {
               </ButtonGroup>
               <ButtonGroup>
                 <ButtonGroupName>Power-ups</ButtonGroupName>
+                <MenuButton><ButtonIcon icon={faRocket} /> Get Power-ups</MenuButton>
               </ButtonGroup>
               <ButtonGroup>
                 <ButtonGroupName>Actions</ButtonGroupName>
@@ -90,17 +100,10 @@ const Overlay = styled('div')({
   zIndex: 20,
 });
 
-const Icon = styled(FontAwesomeIcon)({
-  marginLeft: 4,
-  marginRight: 8,
-  color: '#42526e',
-})
-
 const Detail = styled('div')({
-  background: `${indigo[50]}`,
+  background: indigo[50],
   marginTop: 48,
   marginBottom: 80,
-  padding: '12px 16px',
   borderRadius: 3,
   overflow: 'hidden',
   position: 'relative',
@@ -114,12 +117,24 @@ const Title = styled('div')({
   fontWeight: 'bold',
 })
 
-const List = styled('div')({
-  
-})
+const List = styled('div')(({theme}) => ({
+  color: grey[500],
+  marginLeft: theme.cardDetail.marginLeft,
+  marginBottom: 16,
+  fontSize: 14,
+}))
 
 const ListLink = styled('a')({
+  textTransform: 'none',
+  textDecoration: 'underline',
+  padding: 0,
+  minWidth: 10,
+  color: grey[500],
 
+  '&:hover': {
+    background: 'inherit',
+    color: grey[900],
+  },
 })
 
 const FlexBox = styled('div')({
@@ -128,183 +143,74 @@ const FlexBox = styled('div')({
 
 const Content = styled('div')({
   width: 552,
+  padding: '12px 16px',
 })
 
-const MetaBox = styled('div')({
+const MetaBox = styled('div')(({theme}) => ({
+  display: 'flex',
+  flexWrap: 'wrap',
+  marginLeft: theme.cardDetail.marginLeft,
+}))
 
-})
-
-const Labels = styled('div')({
-  
+const Meta = styled('div')({
+  marginRight: 8,
 })
 
 const MetaTitle = styled('div')({
-
-})
-
-const Label = styled('div')({
-  
-})
-
-const Members = styled('div')({
-  
-})
-
-type DueDateProps = {
-  datetime: string;
-};
-
-const DueDate = ({datetime}: DueDateProps) => {
-  return (
-    <div>
-      <Checkbox value={false} />
-      {datetime}
-    </div>
-  );
-}
-
-const SectionTitle = styled('h3')({
-  fontSize: 16,
-})
-
-const ActionButton = styled(ButtonBase)({
-
-})
-
-const Description = styled('div')({
-  
-})
-
-const Checklist = styled('div')({
-  
-})
-
-type ProgressProps = {
-  progress: number;
-}
-
-const Progress = ({progress}: ProgressProps) => {
-  return (
-    <div>
-      <div>{progress}%</div>
-      <LinearProgress variant="determinate" value={progress} />
-    </div>
-  );
-}
-
-type ChecklistItemProps = {
-  value: boolean;
-  text: string;
-}
-
-const ChecklistItem = ({value, text}: ChecklistItemProps) => {
-  return (
-    <div>
-      <Checkbox value={value} />
-      <div>{text}</div>
-    </div>
-  );
-}
-
-const AddComment = styled('div')({
-  
-})
-
-const Editor = () => {
-  return (
-    <div>
-      <MemberIcon>K</MemberIcon>
-      <TextField multiline={true}></TextField>
-      <EditorButton><Icon icon={faPaperclip} /></EditorButton>
-      <EditorButton><Icon icon={faAt} /></EditorButton>
-      <EditorButton><Icon icon={faSmile} /></EditorButton>
-      <EditorButton><Icon icon={faFileSignature} /></EditorButton>
-    </div>
-  );
-}
-
-const EditorButton = styled(ButtonBase)({
-
-})
-
-const Activity = styled('div')({
-  
-})
-
-type UserActivity = 
-  | { type: 'setDueDate'; datetime: string }
-
-type ActivityLogProps = {
-  activity: UserActivity,
-}
-
-const ActivityLog = ({ activity }: ActivityLogProps) => {
-  return (
-    <div>
-      <MemberIcon>K</MemberIcon>
-      <MemberName>K Heo</MemberName>
-      {actionDescription(activity)}
-      <Time />
-    </div>
-  );
-}
-
-const MemberName = styled('span')({
+  textTransform: 'uppercase',
+  fontSize: 14,
   fontWeight: 'bold',
+  color: grey[600],
+  marginBottom: 4,
 })
 
-const actionDescription = (action: UserActivity) => {
-  return '';
+const Participants = styled('div')({
+  display: 'flex',
+})
+
+const ParticipantIcon = (props: MemberIconProps) => {
+  return (
+    <div style={{marginRight: 4}}>
+      <MemberIcon {...props} />
+    </div>
+  )
 }
+
+const Labels = styled('div')({
+  display: 'flex',
+})
 
 const Actions = styled('div')({
   width: 168,
-})
-
-const Time = () => {
-  return (
-    <div>39 minutes ago</div>
-  );
-}
-
-const Comment = () => {
-  return (
-    <div>
-      <MemberIcon>K</MemberIcon>
-      <MemberName>K Heo</MemberName>
-      <Time />
-      <CommentContent>Hi</CommentContent>
-      <CommentButton><Icon icon={faSmile} /></CommentButton>
-      <CommentMenu>Edit</CommentMenu>
-      <CommentMenu>Add Link as Attachment</CommentMenu>
-      <CommentMenu>Delete</CommentMenu>
-    </div>
-  );
-}
-
-const CommentContent = styled('div')({
-
-})
-
-const CommentButton = styled(ButtonBase)({
-
-})
-
-const CommentMenu = styled(ButtonBase)({
-
+  background: grey[900],
+  padding: '12px 16px',
 })
 
 const ButtonGroup = styled('div')({
   display: 'flex',
   flexDirection: 'column',
+  marginTop: 16,
 })
 
-const ButtonGroupName = styled('h6')({
-
+const ButtonGroupName = styled('h3')({
+  fontSize: 12,
+  textTransform: 'uppercase',
+  margin: 0,
+  marginBottom: 8,
+  color: grey[400],
 })
 
 const MenuButton = styled(ButtonBase)({
-  
+  color: grey[300],
+  background: '#0c1012',
+  justifyContent: 'flex-start',
+  textAlign: 'left',
+  marginBottom: 4,
+  boxShadow: `1px 1px 1px 0px ${blueGrey[900]}`,
+
+  '&:hover': {
+    boxShadow: `1px 1px 8px 0px ${blueGrey[900]}`,
+  }
 })
 
 const ButtonIcon = styled(FontAwesomeIcon)({

@@ -3,10 +3,10 @@ import './App.css';
 import Index from './pages/Index';
 import Board from './pages/Board/Board';
 import Card from './pages/Card/Card';
-import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import { MuiThemeProvider } from '@material-ui/core/styles';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
-const theme = createMuiTheme({});
+import theme from './Theme'
 
 const App: React.FC = () => {
   return (
